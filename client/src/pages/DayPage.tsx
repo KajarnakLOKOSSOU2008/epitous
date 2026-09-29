@@ -294,8 +294,8 @@ function SessionContent({
   const c = day.content;
   if (sessionId.endsWith('-warmup')) return <WarmupView questions={c.warmup.questions} />;
   if (sessionId.endsWith('-course')) return <CourseView content={c.course} />;
-  if (sessionId.endsWith('-research')) return <ResearchView content={c.research} />;
-  if (sessionId.endsWith('-video')) return <VideoView content={c.video} />;
+  if (sessionId.endsWith('-research')) return <ResearchView day={day} content={c.research} />;
+  if (sessionId.endsWith('-video')) return <VideoView day={day} />;
   if (sessionId.endsWith('-practice'))
     return (
       <PracticeView
@@ -413,7 +413,8 @@ function renderInline(text: string): React.ReactNode {
   return parts;
 }
 
-function ResearchView({ content }: { content: FullDay['content']['research'] }) {
+function ResearchView({ day, content }: { day: FullDay; content: FullDay['content']['research'] }) {
+  const repositoryQuery = encodeURIComponent(`${day.title} Epitech C`);
   return (
     <div className="space-y-3">
       <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
@@ -424,6 +425,32 @@ function ResearchView({ content }: { content: FullDay['content']['research'] }) 
         </a>
       </p>
       <p className="text-sm">{content.mission}</p>
+      <div className="flex flex-wrap gap-2">
+        <a
+          href="https://gelules.github.io/introduction/introduction.html"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ep-btn ep-btn-ghost text-xs"
+        >
+          Pédiluve <ExternalLink size={12} />
+        </a>
+        <a
+          href="https://www.youtube.com/@gelules"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ep-btn ep-btn-ghost text-xs"
+        >
+          Chaîne vidéo FR <Video size={12} /> <ExternalLink size={12} />
+        </a>
+        <a
+          href={`https://github.com/search?q=${repositoryQuery}&type=repositories`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="ep-btn ep-btn-ghost text-xs"
+        >
+          Dépôts GitHub publics <ExternalLink size={12} />
+        </a>
+      </div>
       <div className="rounded-xl p-3 border" style={{ background: 'var(--bg-soft)', borderColor: 'var(--border)' }}>
         <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
           Questions à se poser pendant la lecture
@@ -444,32 +471,45 @@ function ResearchView({ content }: { content: FullDay['content']['research'] }) 
   );
 }
 
-function VideoView({ content }: { content: FullDay['content']['video'] }) {
+function VideoView({ day }: { day: FullDay }) {
+  const content = day.content.video;
   return (
     <div className="space-y-3">
       <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
-        Recherche suggérée sur YouTube :
+        Choisis une notion et une langue :
       </p>
-      <a
-        href={content.searchUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="ep-card p-3 flex items-center gap-3 hover:opacity-90 transition"
-      >
-        <div
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-white"
-          style={{ background: 'linear-gradient(135deg, #6366f1 0%, #22d3ee 100%)' }}
-        >
-          <Video size={16} />
-        </div>
-        <div className="flex-1 min-w-0">
-          <div className="font-mono text-sm">{content.searchQuery}</div>
-          <div className="text-xs" style={{ color: 'var(--text-muted)' }}>
-            Ouvrir la recherche YouTube →
-          </div>
-        </div>
-        <ExternalLink size={14} />
-      </a>
+      <div className="space-y-2">
+        {day.content.course.sections.map((section) => {
+          const frenchQuery = `${section.heading} ${day.title} cours français programmation`;
+          const englishQuery = `${section.heading} ${content.searchQuery} English tutorial`;
+          return (
+            <div
+              key={section.heading}
+              className="flex flex-col sm:flex-row sm:items-center gap-2 rounded-lg border p-3"
+              style={{ background: 'var(--bg-soft)', borderColor: 'var(--border)' }}
+            >
+              <span className="flex-1 min-w-0 text-sm font-medium">{section.heading}</span>
+              <div className="flex gap-2">
+                {[
+                  { language: 'FR', query: frenchQuery },
+                  { language: 'EN', query: englishQuery },
+                ].map(({ language, query }) => (
+                  <a
+                    key={language}
+                    href={`https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="ep-btn ep-btn-ghost text-xs"
+                    aria-label={`Rechercher une vidéo en ${language === 'FR' ? 'français' : 'anglais'} sur ${section.heading}`}
+                  >
+                    <Video size={12} /> {language} <ExternalLink size={11} />
+                  </a>
+                ))}
+              </div>
+            </div>
+          );
+        })}
+      </div>
       <div className="rounded-xl p-3 border" style={{ background: 'var(--bg-soft)', borderColor: 'var(--border)' }}>
         <div className="text-xs font-bold uppercase tracking-wider mb-2" style={{ color: 'var(--text-muted)' }}>
           Questions de réflexion (après avoir regardé)
