@@ -26,7 +26,7 @@ export interface PracticeSessionProps {
 export interface PracticeExercise {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   difficulty: 'easy' | 'medium' | 'hard' | 'challenge';
   hint: string;
   extraHints?: string[];
@@ -41,10 +41,10 @@ function getExercises(session: DaySession, day: FullDay): { intro: string; exerc
       exercises: content.exercises.slice(0, 4).map((ex) => ({
         id: ex.id,
         title: ex.title,
-        description: ex.prompt,
+        description: ex.prompt || ex.description || "",
         hint: ex.hints?.[0] ?? 'Réfléchis au problème en le découpant en 2 ou 3 étapes.',
         extraHints: ex.hints?.slice(1) ?? [],
-        difficulty: mapDifficulty(ex.difficulty),
+        difficulty: mapDifficulty(ex.difficulty || ""),
       })),
     };
   }

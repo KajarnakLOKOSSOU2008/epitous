@@ -22,7 +22,7 @@ export interface Day {
   number: number;
   title: string;
   concept: string;
-  description: string;
+  description?: string;
   sessions: DaySession[];
   objectives: string[];
 }
@@ -40,45 +40,54 @@ export interface WarmupContent {
 
 export interface CourseSection {
   heading: string;
-  body: string; // markdown-ish, supports **bold** and `code`
+  body: string;
+  // Alternative field names (backwards compat)
+  title?: string;
+  content?: string; // markdown-ish, supports **bold** and `code`
   code?: string; // C code block
   illustration?: string; // emoji or short ascii
 }
 
 export interface CourseContent {
-  intro: string;
+  intro?: string;
   sections: CourseSection[];
-  keyTakeaways: string[];
+  keyTakeaways?: string[];
 }
 
 export interface ResearchContent {
   resourceUrl: string;
-  resourceName: string;
+  resourceName?: string;
+  url?: string;
   mission: string;
   questions: string[];
 }
 
 export interface VideoContent {
   searchQuery: string;
-  searchUrl: string;
+  searchUrl?: string;
+  query?: string;
   reflectionQuestions: string[];
+  reflections?: string[];
 }
 
 export interface PracticeExercise {
   id: string;
   title: string;
-  prompt: string;
-  hints: string[];
-  difficulty: 'facile' | 'moyen' | 'difficile' | 'défi';
+  heading?: string;
+  prompt?: string;
+  description?: string;
+  hint?: string;
+  hints?: string[];
+  difficulty?: string;
 }
 
 export interface PracticeContent {
-  intro: string;
+  intro?: string;
   exercises: PracticeExercise[];
 }
 
 export interface EpitechContent {
-  context: string;
+  context?: string;
   rules: string[]; // coding style, Makefile, Git rules
   example?: string;
 }
@@ -86,7 +95,10 @@ export interface EpitechContent {
 export interface TaskItem {
   id: string;
   title: string;
-  description: string;
+  heading?: string;
+  description?: string;
+  difficulty?: string;
+  estimatedTime?: string;
   locked?: boolean;
   lockedReason?: string;
 }
@@ -183,7 +195,7 @@ export interface CurriculumPath {
   id: string;
   icon: string;
   title: string;
-  description: string;
+  description?: string;
   estimatedDays: number;
   prerequisites: string[];
   status: PathStatus;

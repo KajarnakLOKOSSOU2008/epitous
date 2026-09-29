@@ -376,7 +376,7 @@ function CourseView({ content }: { content: FullDay['content']['course'] }) {
           À retenir
         </div>
         <ul className="space-y-1">
-          {content.keyTakeaways.map((t, i) => (
+          {content?.keyTakeaways || [].map((t, i) => (
             <li key={i} className="text-sm flex items-start gap-2">
               <CheckCircle2 size={12} className="mt-1 flex-shrink-0" style={{ color: 'var(--accent)' }} />
               <span>{t}</span>
@@ -526,28 +526,28 @@ function PracticeView({
                   <span className="font-semibold text-sm">{ex.title}</span>
                   <span
                     className="text-[10px] uppercase tracking-wider px-1.5 py-0.5 rounded"
-                    style={{ background: 'var(--bg-elev)', color: difficultyColor(ex.difficulty) }}
+                    style={{ background: 'var(--bg-elev)', color: difficultyColor(ex.difficulty || "") }}
                   >
                     {ex.difficulty}
                   </span>
                 </div>
-                <p className="text-sm mt-1">{ex.prompt}</p>
+                <p className="text-sm mt-1">{ex?.prompt || ex?.description || ''}</p>
 
                 {/* Hints */}
                 <div className="mt-2 space-y-1">
-                  {ex.hints.slice(0, revealedHint[ex.id] ?? 0).map((h, hi) => (
+                  {(ex.hints || ex.hint ? [ex.hint] : []).slice(0, revealedHint[ex.id] ?? 0).map((h, hi) => (
                     <div key={hi} className="text-xs flex items-start gap-1.5" style={{ color: 'var(--text-muted)' }}>
                       <Lightbulb size={11} className="mt-0.5 flex-shrink-0" style={{ color: '#f59e0b' }} />
                       <span>{h}</span>
                     </div>
                   ))}
-                  {(revealedHint[ex.id] ?? 0) < ex.hints.length && (
+                  {(ex.hints && (revealedHint[ex.id] ?? 0) < (ex.hints || []).length) && (
                     <button
                       onClick={() => setRevealedHint({ ...revealedHint, [ex.id]: (revealedHint[ex.id] ?? 0) + 1 })}
                       className="ep-btn ep-btn-ghost text-xs !py-1 !px-2"
                     >
                       <Lightbulb size={11} />
-                      Indice {(revealedHint[ex.id] ?? 0) + 1}/{ex.hints.length}
+                      Indice {(revealedHint[ex.id] ?? 0) + 1}/{(ex.hints || ex.hint ? [ex.hint] : []).length}
                     </button>
                   )}
                 </div>

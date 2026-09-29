@@ -30,7 +30,7 @@ export interface TaskSessionProps {
 interface TaskItem {
   id: string;
   title: string;
-  description: string;
+  description?: string;
   difficulty: 'easy' | 'medium' | 'hard' | 'challenge';
   estimatedTime: string;
   locked?: boolean;

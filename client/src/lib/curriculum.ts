@@ -1427,6 +1427,575 @@ export const CURRICULUM_DAYS: FullDay[] = [
       },
     },
   },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 08 — Allocation memoire (malloc, free, my_strdup, my_str_to_word_array)
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 8,
+    title: "Allocation memoire et parsing",
+    concept: "malloc, free, my_strdup, my_str_to_word_array, concat_params",
+    description: "Tu decouvre l'allocation dynamique avec malloc(). C'est le moment ou tu cesses d'utiliser des tableaux statiques pour creer de la memoire a la demande. C'est aussi le jour ou tu apprends a decouper une chaine en mots.",
+    sessions: [
+      { id: "d8-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d8-course", type: "course", title: "Cours : malloc & free", duration: "09:15", completed: false },
+      { id: "d8-research", type: "research", title: "Recherche : man malloc", duration: "11:00", completed: false },
+      { id: "d8-video", type: "video", title: "Video : Pointers and memory", duration: "12:00", completed: false },
+      { id: "d8-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d8-epitech", type: "epitech", title: "Mode Epitech : Norme & malloc", duration: "16:00", completed: false },
+      { id: "d8-task", type: "task", title: "Taches Piscine", duration: "17:00", completed: false },
+      { id: "d8-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Comprendre ce qu'est la memoire heap vs stack",
+      "Utiliser malloc() pour allouer dynamiquement de la memoire",
+      "Utiliser free() pour liberer la memoire allouee",
+      "Implementer my_strdup() qui duplique une chaine",
+      "Implementer my_str_to_word_array() qui decoupe une phrase en mots",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Que fait malloc en C ?", a: "malloc alloue un bloc de memoire sur le heap et retourne un pointeur vers ce bloc." },
+          { q: "Que se passe-t-il si tu oublies de free() ?", a: "Fuite de memoire (memory leak). La memoire reste occupee jusqu'a la fin du programme." },
+          { q: "Que retourne malloc en cas d'echec ?", a: "NULL. Il faut TOUJOURS verifier le retour de malloc." },
+          { q: "Quelle difference entre stack et heap ?", a: "La stack est automatique (variables locales), le heap est manuel (malloc/free)." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "La memoire en C",
+            body: "En C, il y a deux zones de memoire :\n\n1. La stack (pile) : variables locales, automatiquement allouees et liberees. Taille limitee (~8MB).\n\n2. Le heap (tas) : memoire dynamique, allouee avec malloc() et liberee avec free(). Taille limitee par la RAM disponible.\n\nQuand tu ne connais pas la taille a l'avance (une chaine de longueur variable, un tableau dynamique), tu utilises le heap.",
+          },
+          {
+            heading: "malloc() et free()",
+            body: "int *array = malloc(sizeof(int) * 100);\nif (array == NULL) return 84;\narray[0] = 42;\nfree(array);\n\nRegle d'or : chaque malloc() doit avoir un free() correspondant.",
+          },
+          {
+            heading: "my_strdup()",
+            body: "strdup alloue une nouvelle chaine et y copie le contenu de l'originale.\n\nchar *my_strdup(char const *src)\n{\n    int len = my_strlen(src);\n    char *dest = malloc(sizeof(char) * (len + 1));\n    if (dest == NULL) return NULL;\n    for (int i = 0; i <= len; i++)\n        dest[i] = src[i];\n    return dest;\n}\n\nNote : len + 1 pour le caractere de fin \\0.",
+          },
+          {
+            heading: "my_str_to_word_array()",
+            body: "Cette fonction decoupe une chaine en tableau de mots, en utilisant les espaces et caracteres non-imprimables comme separateurs.\n\n1. Compter le nombre de mots\n2. Allouer le tableau de pointeurs (char**)\n3. Pour chaque mot : calculer sa longueur, allouer, copier\n4. Terminer par NULL\n\nC'est un exercice difficile mais fondamental. Il combine malloc, strlen, strcpy et la gestion de tableaux de pointeurs.",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://man7.org/linux/man-pages/man3/malloc.3.html",
+        mission: "Lis la page de manuel de malloc(3). Note : 1. Les parametres (un seul : size_t size) 2. La valeur de retour (void*, NULL si echec) 3. Les fonctions liees : calloc, realloc, free 4. Les erreurs possibles (ENOMEM)",
+        questions: [
+          "Que signifie le type size_t ?",
+          "Quelle difference entre malloc et calloc ?",
+          "Que fait realloc ?",
+          "Pourquoi malloc retourne-t-elle void* ?",
+          "Que faut-il TOUJOURS faire apres un malloc ?",
+        ],
+      },
+      video: {
+        searchQuery: "C programming malloc free memory management explained",
+        reflectionQuestions: [
+          "Qu'as-tu appris sur la difference entre stack et heap ?",
+          "Pourquoi les fuites de memoire sont-elles dangereuses ?",
+          "Comment verifier qu'un malloc a reussi ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d8-ex1", title: "my_strdup()", description: "Implemente my_strdup(char const *src) qui alloue et copie une chaine. N'oublie pas le +1 pour \\0.", hint: "Utilise my_strlen pour calculer la taille, puis malloc, puis boucle de copie." },
+          { id: "d8-ex2", title: "concat_params()", description: "Concatene tous les parametres de main (argv) en une seule chaine, separes par \\n.", hint: "Compte la taille totale necessaire, un seul malloc, puis copie chaque parametre." },
+          { id: "d8-ex3", title: "my_str_to_word_array()", description: "Decoupe une chaine en tableau de mots. Separateurs : espaces, tabulations, caracteres non imprimables. Retourne un char** termine par NULL.", hint: "Commence par compter les mots. Pour chaque mot : compte sa longueur, malloc, copie." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "Verifier le retour de malloc : la norme Epitech exige que tu verifies ptr == NULL apres chaque malloc.",
+          "Free ce que tu malloc : chaque allocation doit avoir une liberation correspondante. Utilise valgrind pour verifier.",
+          "Pas de variable globale : la norme interdit les variables globales.",
+          "sizeof au lieu de tailles en dur : utilise sizeof(char) plutot que 1.",
+        ],
+      },
+      tasks: {
+        intro: "Jour 08 de la Piscine. Ces exercices combinent tout ce que tu as appris : pointeurs, chaines, et maintenant allocation memoire.",
+        tasks: [
+          { id: "d8-t1", title: "my_strdup", description: "Dupliquer une chaine avec malloc.", difficulty: "medium", estimatedTime: "45 min", locked: false },
+          { id: "d8-t2", title: "concat_params", description: "Concatener argv en une chaine avec \\n.", difficulty: "medium", estimatedTime: "1h", locked: true, lockedReason: "Apres my_strdup" },
+          { id: "d8-t3", title: "my_str_to_word_array", description: "Decouper une chaine en tableau de mots.", difficulty: "hard", estimatedTime: "2-3h", locked: true, lockedReason: "Apres concat_params" },
+          { id: "d8-t4", title: "my_show_word_array", description: "Afficher un tableau de mots (char**).", difficulty: "easy", estimatedTime: "30 min", locked: true, lockedReason: "Apres my_str_to_word_array" },
+        ],
+      },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 09 — Structures et tableaux de structures
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 9,
+    title: "Structures de donnees",
+    concept: "struct, typedef, my_params_to_array, my_show_param_array",
+    description: "Tu vas decouvrir les structures : un moyen de regrouper plusieurs variables sous un meme nom. C'est la base de la programmation structuree et de tous les types complexes.",
+    sessions: [
+      { id: "d9-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d9-course", type: "course", title: "Cours : struct & typedef", duration: "09:15", completed: false },
+      { id: "d9-research", type: "research", title: "Recherche", duration: "11:00", completed: false },
+      { id: "d9-video", type: "video", title: "Video", duration: "12:00", completed: false },
+      { id: "d9-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d9-epitech", type: "epitech", title: "Mode Epitech", duration: "16:00", completed: false },
+      { id: "d9-task", type: "task", title: "Taches", duration: "17:00", completed: false },
+      { id: "d9-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Definir et utiliser une struct en C",
+      "Utiliser typedef pour creer des alias de types",
+      "Acceder aux champs d'une structure avec . et ->",
+      "Creer un tableau de structures dynamiquement",
+      "Implementer my_params_to_array() et my_show_param_array()",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Qu'est-ce qu'une struct en C ?", a: "Une structure permet de regrouper plusieurs variables de types differents sous un meme nom." },
+          { q: "Comment acceder au champ 'name' d'une struct 'p' ?", a: "Avec p.name si p est une variable, ou p->name si p est un pointeur." },
+          { q: "Que fait typedef ?", a: "typedef cree un alias pour un type existant." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "Definir une struct",
+            body: "typedef struct info {\n    char *name;\n    char *value;\n} info_t;\n\ninfo_t my_info;\nmy_info.name = \"epitech\";\nmy_info.value = \"42\";",
+          },
+          {
+            heading: "Pointeurs et structures",
+            body: "Quand tu as un pointeur vers une struct, utilise -> au lieu de .\ninfo_t *ptr = &my_info;\nptr->name = \"test\";  // Equivalent a (*ptr).name",
+          },
+          {
+            heading: "Tableau de structures (my_params_to_array)",
+            body: "my_params_to_array convertit argv en un tableau de structures :\n\ntypedef struct info {\n    char *name;\n    char *value;\n} info_t;\n\ninfo_t *my_params_to_array(int ac, char **av)\n{\n    info_t *arr = malloc(sizeof(info_t) * ac);\n    // Remplir chaque element avec name = av[i] et value = NULL\n    return arr;\n}\n\nOn utilise un tableau dynamique de structures alloue avec un seul malloc.",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://learn-c.org/en/Structures",
+        mission: "Lis le tutoriel sur les structures. Note : 1. Comment declarer une struct 2. Comment utiliser typedef 3. Comment acceder aux champs 4. Comment passer une struct a une fonction",
+        questions: [
+          "Quelle est la difference entre . et -> ?",
+          "Pourquoi utiliser typedef ?",
+          "Peut-on imbriquer des structures ?",
+          "Comment allouer une structure dynamiquement ?",
+        ],
+      },
+      video: {
+        searchQuery: "C programming structures struct typedef tutorial",
+        reflectionQuestions: [
+          "Pourquoi les structures sont-elles utiles en C ?",
+          "Quelle difference entre . et -> ?",
+          "Comment organiser ses donnees avec des structures ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d9-ex1", title: "Definir une struct info_t", description: "Cree une structure info_t avec deux champs : char *name et char *value.", hint: "Utilise typedef struct { ... } info_t;" },
+          { id: "d9-ex2", title: "my_params_to_array()", description: "Convertit argv en tableau de info_t. Chaque element : name = av[i], value = NULL.", hint: "Un seul malloc pour le tableau, puis remplir chaque element." },
+          { id: "d9-ex3", title: "my_show_param_array()", description: "Affiche un tableau de info_t : name\\nvalue\\n pour chaque element.", hint: "Parcours le tableau jusqu'a rencontrer NULL." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "typedef obligatoire : la norme Epitech exige typedef pour les structures.",
+          "Nom en _t : par convention, les types se terminent par _t (info_t, list_t, etc.).",
+          "Initialiser a NULL : les pointeurs dans une struct doivent etre initialises a NULL.",
+          "Header .h : les definitions de struct vont dans un fichier .h, pas dans le .c.",
+        ],
+      },
+      tasks: {
+        intro: "Jour 09 : les structures ouvrent la porte a la programmation organisee.",
+        tasks: [
+          { id: "d9-t1", title: "Creer une struct", description: "Definir info_t avec name et value.", difficulty: "easy", estimatedTime: "20 min", locked: false },
+          { id: "d9-t2", title: "my_params_to_array", description: "argv -> tableau de info_t.", difficulty: "hard", estimatedTime: "2h", locked: true, lockedReason: "Apres struct" },
+          { id: "d9-t3", title: "my_show_param_array", description: "Afficher le tableau de structs.", difficulty: "medium", estimatedTime: "45 min", locked: true, lockedReason: "Apres params_to_array" },
+        ],
+      },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 10 — Do-op : premiere calculatrice
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 10,
+    title: "Do-op : ta premiere calculatrice",
+    concept: "switch, pointeurs sur fonctions, do_op, my_sort_word_array",
+    description: "Tu vas creer un programme qui prend une operation en parametre (ex: ./do_op 5 + 3) et affiche le resultat. C'est le jour ou tu decouvres les pointeurs sur fonctions.",
+    sessions: [
+      { id: "d10-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d10-course", type: "course", title: "Cours : switch & function pointers", duration: "09:15", completed: false },
+      { id: "d10-research", type: "research", title: "Recherche", duration: "11:00", completed: false },
+      { id: "d10-video", type: "video", title: "Video", duration: "12:00", completed: false },
+      { id: "d10-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d10-epitech", type: "epitech", title: "Mode Epitech", duration: "16:00", completed: false },
+      { id: "d10-task", type: "task", title: "Taches", duration: "17:00", completed: false },
+      { id: "d10-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Utiliser switch/case pour gerer plusieurs cas",
+      "Comprendre les pointeurs sur fonctions",
+      "Implementer do_op (mini calculatrice en ligne de commande)",
+      "Implementer my_sort_word_array (trier un tableau de mots)",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Quelle difference entre if/else et switch ?", a: "switch est plus lisible pour tester une valeur contre plusieurs constantes. Il ne fonctionne qu'avec des entiers et des chars." },
+          { q: "Qu'est-ce qu'un pointeur sur fonction ?", a: "C'est un pointeur qui stocke l'adresse d'une fonction. On peut l'appeler indirectement via ce pointeur." },
+          { q: "Comment convertir une chaine en entier ?", a: "Avec atoi() ou my_getnbr() que tu as implemente au Jour 04." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "switch / case",
+            body: "switch (operator) {\n    case '+': result = a + b; break;\n    case '-': result = a - b; break;\n    case '*': result = a * b; break;\n    case '/': result = a / b; break;\n    default: result = 0; break;\n}\n\nN'oublie pas break; Sans break, l'execution continue dans le case suivant (fall-through).",
+          },
+          {
+            heading: "Pointeurs sur fonctions",
+            body: "Un pointeur sur fonction permet d'appeler une fonction indirectement :\nint (*operation)(int, int);\noperation = &add;\nint result = operation(3, 4);  // Appelle add(3, 4)\n\nPour do_op, tu peux creer un tableau de pointeurs sur fonctions :\nint (*ops[4])(int, int) = {&add, &sub, &mul, &div};",
+          },
+          {
+            heading: "Tri de mots (my_sort_word_array)",
+            body: "Tri a bulles sur un tableau de chaines (char**) :\nvoid my_sort_word_array(char **tab)\n{\n    int n = 0;\n    while (tab[n] != NULL) n++;\n    for (int i = 0; i < n - 1; i++)\n        for (int j = 0; j < n - 1 - i; j++)\n            if (my_strcmp(tab[j], tab[j+1]) > 0) {\n                char *tmp = tab[j];\n                tab[j] = tab[j+1];\n                tab[j+1] = tmp;\n            }\n}\n\nOn utilise my_strcmp (du Jour 06) pour comparer les mots.",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://www.geeksforgeeks.org/function-pointer-in-c/",
+        mission: "Lis l'article sur les pointeurs sur fonctions. Note : 1. La syntaxe de declaration 2. Comment assigner une fonction 3. Comment appeler via le pointeur 4. Les cas d'usage (callbacks, dispatch tables)",
+        questions: [
+          "Pourquoi utiliser un pointeur sur fonction ?",
+          "Quelle est la syntaxe de declaration ?",
+          "Comment creer un tableau de pointeurs sur fonctions ?",
+          "Quels sont les avantages par rapport a if/else ?",
+        ],
+      },
+      video: {
+        searchQuery: "C programming function pointers tutorial",
+        reflectionQuestions: [
+          "Qu'est-ce qu'un pointeur sur fonction et pourquoi l'utiliser ?",
+          "Comment un tableau de pointeurs sur fonctions remplace-t-il un switch ?",
+          "Quel concept etait nouveau pour toi ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d10-ex1", title: "do_op basique (switch)", description: "./do_op 5 + 3 -> affiche 8. Utilise switch/case pour l'operateur.", hint: "Recupere argv[1] = nombre, argv[2] = operateur, argv[3] = nombre. Convertis avec atoi." },
+          { id: "d10-ex2", title: "do_op avec pointeurs sur fonctions", description: "Refais do_op mais avec un tableau de pointeurs sur fonctions au lieu de switch.", hint: "Cree int (*ops[])(int,int) = {add, sub, mul, div}; et un tableau de chars d'operateurs." },
+          { id: "d10-ex3", title: "my_sort_word_array", description: "Trie un tableau de mots (char**) par ordre alphabetique. Utilise my_strcmp.", hint: "Tri a bulles (bubble sort). Compte le nombre de mots jusqu'a NULL." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "Gerer les erreurs : division par zero -> afficher 0 ou un message d'erreur selon le sujet.",
+          "argc check : verifier que tu as bien 4 parametres (programme + 3 args).",
+          "Pas de if en cascade : si tu as plus de 3 cas, utilise switch.",
+          "Pointeurs sur fonctions : c'est attendu pour do_op avance.",
+        ],
+      },
+      tasks: {
+        intro: "Jour 10 : tu as assez de connaissances pour construire une vraie application (mini-calculatrice).",
+        tasks: [
+          { id: "d10-t1", title: "do_op (switch)", description: "Calculatrice basique avec switch/case.", difficulty: "medium", estimatedTime: "1h", locked: false },
+          { id: "d10-t2", title: "my_sort_word_array", description: "Trier un tableau de mots.", difficulty: "medium", estimatedTime: "1h", locked: true, lockedReason: "Apres do_op" },
+          { id: "d10-t3", title: "my_advanced_do_op", description: "do_op avec pointeurs sur fonctions + gestion d'erreurs.", difficulty: "hard", estimatedTime: "2h", locked: true, lockedReason: "Apres sort_word_array" },
+          { id: "d10-t4", title: "my_advanced_sort_word_array", description: "Tri avec fonction de comparaison en parametre.", difficulty: "challenge", estimatedTime: "2h+", locked: true, lockedReason: "Apres advanced_do_op" },
+        ],
+      },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 11 — Listes chainees
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 11,
+    title: "Listes chainees",
+    concept: "listes chainees, my_params_to_list, my_list_size, parcours de liste",
+    description: "Tu vas decouvrir les listes chainees - la structure de donnees la plus importante de la Piscine. C'est un concept fondamental que tu utiliseras pendant toute ta carriere de developpeur.",
+    sessions: [
+      { id: "d11-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d11-course", type: "course", title: "Cours : Listes chainees", duration: "09:15", completed: false },
+      { id: "d11-research", type: "research", title: "Recherche", duration: "11:00", completed: false },
+      { id: "d11-video", type: "video", title: "Video", duration: "12:00", completed: false },
+      { id: "d11-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d11-epitech", type: "epitech", title: "Mode Epitech", duration: "16:00", completed: false },
+      { id: "d11-task", type: "task", title: "Taches", duration: "17:00", completed: false },
+      { id: "d11-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Comprendre ce qu'est une liste chainee et pourquoi elle est utile",
+      "Definir une struct de noeud (node) avec un pointeur next",
+      "Implementer my_params_to_list() qui cree une liste depuis argv",
+      "Implementer my_list_size() qui compte les elements",
+      "Parcourir une liste chainee avec une boucle while",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Qu'est-ce qu'une liste chainee ?", a: "Une structure de donnees ou chaque element (noeud) contient une valeur et un pointeur vers l'element suivant." },
+          { q: "Pourquoi utiliser une liste chainee plutot qu'un tableau ?", a: "Une liste chainee peut grandir/retrécir dynamiquement sans reallocation. Insertion/suppression en O(1) en tete." },
+          { q: "Comment savoir qu'on est a la fin de la liste ?", a: "Le pointeur next du dernier noeud est NULL." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "Definir un noeud (node)",
+            body: "typedef struct list {\n    char *value;\n    struct list *next;\n} list_t;\n\nChaque noeud contient :\n- value : la donnee stockee\n- next : un pointeur vers le noeud suivant (ou NULL si dernier)\n\nC'est une structure recursive : un noeud pointe vers un autre noeud du meme type.",
+          },
+          {
+            heading: "Creer un noeud",
+            body: "list_t *create_node(char *value)\n{\n    list_t *node = malloc(sizeof(list_t));\n    if (node == NULL) return NULL;\n    node->value = value;\n    node->next = NULL;\n    return node;\n}\n\nToujours initialiser next a NULL.",
+          },
+          {
+            heading: "my_params_to_list()",
+            body: "Convertit argv en liste chainee. Chaque parametre devient un noeud.\n\nlist_t *my_params_to_list(int ac, char **av)\n{\n    list_t *head = NULL;\n    for (int i = 0; i < ac; i++) {\n        list_t *node = create_node(av[i]);\n        node->next = head;  // Insertion en tete\n        head = node;\n    }\n    return head;\n}\n\nNote : l'insertion en tete inverse l'ordre. C'est le plus simple et le plus efficace (O(1)).",
+          },
+          {
+            heading: "Parcourir une liste (my_list_size)",
+            body: "int my_list_size(list_t *list)\n{\n    int count = 0;\n    list_t *current = list;\n    while (current != NULL) {\n        count++;\n        current = current->next;\n    }\n    return count;\n}\n\nLe parcours se fait toujours avec une boucle while et un pointeur courant.",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://www.geeksforgeeks.org/linked-list-set-1-introduction/",
+        mission: "Lis l'introduction aux listes chainees. Note : 1. La difference avec un tableau 2. Les avantages (insertion/suppression) 3. Les inconvenients (acces aleatoire O(n)) 4. Les differents types (simplement, doublement, circulaire)",
+        questions: [
+          "Quelle est la complexite d'insertion en tete d'une liste vs un tableau ?",
+          "Pourquoi ne peut-on pas acceder directement au 5eme element ?",
+          "Que fait head->next->next->next ?",
+          "Comment liberer toute une liste ?",
+        ],
+      },
+      video: {
+        searchQuery: "C programming linked lists tutorial explained",
+        reflectionQuestions: [
+          "Pourquoi les listes chainees sont-elles fondamentales en C ?",
+          "Quelle difference avec un tableau ?",
+          "Comment parcourir une liste sans perdre le pointeur de tete ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d11-ex1", title: "Definir list_t et create_node()", description: "Cree la struct list_t (value + next) et une fonction create_node(char *value).", hint: "typedef struct list { char *value; struct list *next; } list_t;" },
+          { id: "d11-ex2", title: "my_params_to_list()", description: "Convertit argv en liste chainee. Insere en tete pour chaque parametre.", hint: "Boucle for sur ac, cree un noeud pour chaque av[i], insere en tete." },
+          { id: "d11-ex3", title: "my_list_size()", description: "Compte le nombre d'elements dans une liste chainee.", hint: "Boucle while avec pointeur courant. current = current->next jusqu'a NULL." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "struct recursive : la struct doit s'inclure elle-meme via un pointeur (struct list *next).",
+          "typedef obligatoire : typedef struct list { ... } list_t;",
+          "Malloc check : verifier le retour de malloc dans create_node.",
+          "Header .h : la definition de list_t va dans un .h.",
+        ],
+      },
+      tasks: {
+        intro: "Jour 11 : les listes chainees sont le coeur de la Piscine. Beaucoup de projets futurs les utiliseront.",
+        tasks: [
+          { id: "d11-t1", title: "list_t + create_node", description: "Definir la struct et la fonction de creation.", difficulty: "easy", estimatedTime: "30 min", locked: false },
+          { id: "d11-t2", title: "my_params_to_list", description: "argv -> liste chainee.", difficulty: "hard", estimatedTime: "2h", locked: true, lockedReason: "Apres create_node" },
+          { id: "d11-t3", title: "my_list_size", description: "Compter les elements d'une liste.", difficulty: "medium", estimatedTime: "45 min", locked: true, lockedReason: "Apres params_to_list" },
+        ],
+      },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 12 — Recreer cat et grep
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 12,
+    title: "Recreer cat et grep",
+    concept: "open, read, write, close, file descriptors, my_cat, my_grep",
+    description: "Tu vas recreer deux outils Unix fondamentaux : cat (afficher le contenu d'un fichier) et grep (chercher un motif dans un fichier). C'est le jour ou tu decouvres les appels systeme : open, read, write, close.",
+    sessions: [
+      { id: "d12-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d12-course", type: "course", title: "Cours : File descriptors", duration: "09:15", completed: false },
+      { id: "d12-research", type: "research", title: "Recherche : man open", duration: "11:00", completed: false },
+      { id: "d12-video", type: "video", title: "Video : File I/O", duration: "12:00", completed: false },
+      { id: "d12-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d12-epitech", type: "epitech", title: "Mode Epitech", duration: "16:00", completed: false },
+      { id: "d12-task", type: "task", title: "Taches", duration: "17:00", completed: false },
+      { id: "d12-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Comprendre ce qu'est un file descriptor (fd)",
+      "Utiliser open() pour ouvrir un fichier",
+      "Utiliser read() pour lire le contenu",
+      "Utiliser write() pour ecrire sur la sortie standard",
+      "Utiliser close() pour fermer le fichier",
+      "Implementer my_cat (afficher un fichier) et my_grep (chercher un motif)",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Qu'est-ce qu'un file descriptor ?", a: "Un entier qui identifie un fichier ouvert. 0 = stdin, 1 = stdout, 2 = stderr." },
+          { q: "Que font les 4 appels systeme open, read, write, close ?", a: "open ouvre un fichier, read lit des octets, write ecrit des octets, close ferme le fichier." },
+          { q: "Que fait la commande cat ?", a: "Elle affiche le contenu d'un fichier sur la sortie standard." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "Le cycle open -> read -> close",
+            body: "#include <fcntl.h>   // open\n#include <unistd.h> // read, write, close\n\nint fd = open(\"file.txt\", O_RDONLY);\nif (fd == -1) return 84;\nchar buffer[256];\nint bytes_read = read(fd, buffer, 255);\nbuffer[bytes_read] = '\\0';\nwrite(1, buffer, bytes_read);  // 1 = stdout\nclose(fd);\n\nLe cycle :\n1. open() -> obtient un fd\n2. read(fd, buffer, size) -> lit size octets dans buffer\n3. write(1, buffer, size) -> ecrit sur stdout\n4. close(fd) -> ferme le fichier",
+          },
+          {
+            heading: "read() en boucle (my_cat)",
+            body: "Pour lire un fichier entier, il faut boucler sur read() jusqu'a ce qu'il retourne 0 (fin de fichier) :\n\nvoid my_cat(char *path)\n{\n    int fd = open(path, O_RDONLY);\n    if (fd == -1) return;\n    char buffer[256];\n    int bytes;\n    while ((bytes = read(fd, buffer, 255)) > 0) {\n        write(1, buffer, bytes);\n    }\n    close(fd);\n}\n\nread retourne le nombre d'octets lus. 0 = fin de fichier. -1 = erreur.",
+          },
+          {
+            heading: "my_grep (chercher un motif)",
+            body: "grep cherche une chaine dans chaque ligne d'un fichier. On lit ligne par ligne et on verifie si le motif est present :\n\nwhile (read_line(fd, line)) {\n    if (my_strstr(line, pattern) != NULL) {\n        write(1, line, my_strlen(line));\n    }\n}\n\nOn utilise my_strstr() du Jour 06 pour chercher le motif.",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://man7.org/linux/man-pages/man2/open.2.html",
+        mission: "Lis la page de manuel de open(2). Note : 1. Les parametres (path, flags, mode) 2. Les flags courants (O_RDONLY, O_WRONLY, O_RDWR, O_CREAT) 3. La valeur de retour (fd ou -1) 4. Les erreurs possibles",
+        questions: [
+          "Que signifie O_RDONLY ?",
+          "Quelle est la difference entre open et fopen ?",
+          "Que retourne read quand le fichier est fini ?",
+          "Pourquoi fermer un fichier avec close() ?",
+        ],
+      },
+      video: {
+        searchQuery: "C programming file I/O open read write close tutorial",
+        reflectionQuestions: [
+          "Qu'est-ce qu'un file descriptor et pourquoi 0, 1, 2 sont speciaux ?",
+          "Pourquoi read peut retourner moins d'octets que demande ?",
+          "Comment gerer les erreurs de open ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d12-ex1", title: "my_cat basique", description: "Affiche le contenu d'un fichier passe en parametre. Utilise open, read, write, close.", hint: "Boucle sur read jusqu'a 0. write(1, buffer, bytes) a chaque iteration." },
+          { id: "d12-ex2", title: "my_cat avec gestion d'erreurs", description: "Ajoute la gestion : fichier introuvable -> write sur stderr (fd 2). Pas de parametre -> lire stdin (fd 0).", hint: "if (fd == -1) { write(2, error_msg, len); } Pour stdin, fd = 0." },
+          { id: "d12-ex3", title: "my_grep", description: "Cherche un motif dans un fichier. ./my_grep motif fichier. Affiche les lignes qui contiennent le motif.", hint: "Lis ligne par ligne, utilise my_strstr pour chercher le motif." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "Verifier open : fd == -1 -> erreur. Toujours gerer.",
+          "Verifier read : read peut retourner -1 en cas d'erreur.",
+          "Pas de printf : utilise write() pour la sortie. La norme Epitech privilegie les appels systeme.",
+          "Fermer les fichiers : chaque open doit avoir un close correspondant.",
+          "Gerer le cas sans parametre : si argc < 2, lire sur stdin (fd 0).",
+        ],
+      },
+      tasks: {
+        intro: "Jour 12 : recreer cat et grep te fait comprendre comment fonctionnent vraiment les outils Unix.",
+        tasks: [
+          { id: "d12-t1", title: "my_cat", description: "Afficher un fichier avec open/read/write/close.", difficulty: "medium", estimatedTime: "1.5h", locked: false },
+          { id: "d12-t2", title: "my_cat (erreurs + stdin)", description: "Gerer les erreurs et lire stdin si pas de fichier.", difficulty: "hard", estimatedTime: "2h", locked: true, lockedReason: "Apres my_cat basique" },
+          { id: "d12-t3", title: "my_grep", description: "Chercher un motif dans un fichier.", difficulty: "hard", estimatedTime: "2-3h", locked: true, lockedReason: "Apres my_cat" },
+        ],
+      },
+    },
+  },
+
+  // ───────────────────────────────────────────────────────────────────
+  // DAY 13 — Graphisme : ouvrir une fenetre
+  // ───────────────────────────────────────────────────────────────────
+  {
+    number: 13,
+    title: "Graphisme : ouvrir une fenetre",
+    concept: "CSFML, opening_a_window, display_an_image, evenements",
+    description: "Dernier jour ! Tu vas decouvrir comment ouvrir une fenetre graphique et afficher une image en C avec la CSFML. C'est une introduction au monde de la programmation graphique.",
+    sessions: [
+      { id: "d13-warmup", type: "warmup", title: "Echauffement", duration: "09:00", completed: false },
+      { id: "d13-course", type: "course", title: "Cours : CSFML", duration: "09:15", completed: false },
+      { id: "d13-research", type: "research", title: "Recherche : CSFML docs", duration: "11:00", completed: false },
+      { id: "d13-video", type: "video", title: "Video : CSFML", duration: "12:00", completed: false },
+      { id: "d13-practice", type: "practice", title: "Pratique", duration: "14:00", completed: false },
+      { id: "d13-epitech", type: "epitech", title: "Mode Epitech", duration: "16:00", completed: false },
+      { id: "d13-task", type: "task", title: "Taches", duration: "17:00", completed: false },
+      { id: "d13-review", type: "review", title: "Fin de journee", duration: "18:00", completed: false },
+    ],
+    objectives: [
+      "Comprendre ce qu'est la CSFML et comment l'installer",
+      "Ouvrir une fenetre graphique avec sfRenderWindow_create",
+      "Afficher une image avec sfTexture et sfSprite",
+      "Gerer la boucle d'evenements (fermeture de fenetre)",
+      "Comprendre la notion de frame rate et de boucle de rendu",
+    ],
+    content: {
+      warmup: {
+        questions: [
+          { q: "Qu'est-ce que la CSFML ?", a: "CSFML est la binding C de la SFML (Simple and Fast Multimedia Library), une bibliotheque pour creer des applications graphiques." },
+          { q: "Qu'est-ce qu'une boucle d'evenements ?", a: "Une boucle qui ecoute en continu les actions de l'utilisateur (clic, touche, fermeture de fenetre) et y reagir." },
+          { q: "Que fait un frame rate de 60 FPS ?", a: "La fenetre se rafraichit 60 fois par seconde, ce qui donne une animation fluide." },
+        ],
+      },
+      course: {
+        sections: [
+          {
+            heading: "Ouvrir une fenetre",
+            body: "#include <SFML/Graphics.h>\n\nint main(void)\n{\n    sfVideoMode mode = {800, 600, 32};\n    sfRenderWindow *window = sfRenderWindow_create(mode, \"My Window\", sfClose, NULL);\n    \n    while (sfRenderWindow_isOpen(window)) {\n        sfEvent event;\n        while (sfRenderWindow_pollEvent(window, &event)) {\n            if (event.type == sfEvtClosed)\n                sfRenderWindow_close(window);\n        }\n        sfRenderWindow_clear(window, sfBlack);\n        sfRenderWindow_display(window);\n    }\n    sfRenderWindow_destroy(window);\n    return 0;\n}\n\nLa boucle principale : 1. Poll events 2. Clear 3. Draw 4. Display",
+          },
+          {
+            heading: "Afficher une image",
+            body: "sfTexture *texture = sfTexture_createFromFile(\"image.png\", NULL);\nsfSprite *sprite = sfSprite_create();\nsfSprite_setTexture(sprite, texture, sfTrue);\n\n// Dans la boucle :\nsfRenderWindow_drawSprite(window, sprite, NULL);\n\nUne image en SFML = une texture + un sprite.",
+          },
+          {
+            heading: "Gerer les evenements",
+            body: "while (sfRenderWindow_pollEvent(window, &event)) {\n    if (event.type == sfEvtClosed)\n        sfRenderWindow_close(window);\n    if (event.type == sfEvtKeyPressed) {\n        if (event.key.code == sfKeyEscape)\n            sfRenderWindow_close(window);\n    }\n    if (event.type == sfEvtMouseButtonPressed) {\n        // event.mouseButton.x, event.mouseButton.y\n    }\n}\n\nLes evenements : fermeture, clavier, souris, joystick...",
+          },
+        ],
+      },
+      research: {
+        resourceUrl: "https://www.sfml-dev.org/documentation/2.6.0/",
+        mission: "Parcours la documentation de la CSFML. Note : 1. Les modules disponibles (Graphics, Window, System, Audio, Network) 2. La creation d'une fenetre 3. La gestion des evenements 4. Comment compiler avec -lcsfml-graphics",
+        questions: [
+          "Comment compiler un programme qui utilise la CSFML ?",
+          "Quelle est la difference entre sfTexture et sfSprite ?",
+          "Comment gerer la fermeture de la fenetre ?",
+          "Que fait sfRenderWindow_clear ?",
+        ],
+      },
+      video: {
+        searchQuery: "CSFML C programming window tutorial graphics",
+        reflectionQuestions: [
+          "Qu'est-ce qu'une boucle de rendu et pourquoi est-elle necessaire ?",
+          "Comment la CSFML simplifie-t-elle la programmation graphique ?",
+          "Quels evenements peux-tu gerer ?",
+        ],
+      },
+      practice: {
+        exercises: [
+          { id: "d13-ex1", title: "opening_a_window", description: "Ouvre une fenetre 800x600 qui reste ouverte jusqu'a ce qu'on clique sur la croix. Compile avec : gcc file.c -lcsfml-graphics -lcsfml-window -lcsfml-system.", hint: "sfRenderWindow_create + boucle avec pollEvent + sfEvtClosed." },
+          { id: "d13-ex2", title: "display_an_image", description: "Affiche une image dans la fenetre. Utilise sfTexture_createFromFile et sfSprite.", hint: "Charge la texture, cree le sprite, draw dans la boucle." },
+        ],
+      },
+      epitech: {
+        rules: [
+          "Makefile : doit inclure les flags -lcsfml-graphics -lcsfml-window -lcsfml-system.",
+          "Liberer la memoire : sfRenderWindow_destroy, sfTexture_destroy, sfSprite_destroy.",
+          "Frame rate : utiliser sfRenderWindow_setFramerateLimit(window, 60).",
+          "Erreur de chargement : verifier que sfTexture_createFromFile ne retourne pas NULL.",
+        ],
+      },
+      tasks: {
+        intro: "Jour 13 : dernier jour ! Tu decouvres le graphisme, une toute autre dimension de la programmation.",
+        tasks: [
+          { id: "d13-t1", title: "opening_a_window", description: "Ouvrir une fenetre qui se ferme correctement.", difficulty: "medium", estimatedTime: "1.5h", locked: false },
+          { id: "d13-t2", title: "display_an_image", description: "Afficher une image dans la fenetre.", difficulty: "hard", estimatedTime: "2h", locked: true, lockedReason: "Apres opening_a_window" },
+        ],
+      },
+    },
+  },
 ];
 
 // Helper for the curriculum paths page (preview)
