@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EpiTous — Guide Complet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+@page { size: 720px 1020px; margin: 0; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { font-family: 'Inter', sans-serif; background: #0a0e1a; color: #e2e8f0; }
+
+.cover {
+  width: 720px; height: 1020px; box-sizing: border-box;
+  break-after: page; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, #0a0e1a 0%, #111827 50%, #0a0e1a 100%);
+  display: flex; flex-direction: column; justify-content: center; align-items: center;
+  padding: 60px;
+}
+.cover::before {
+  content: ''; position: absolute; top: -100px; right: -100px;
+  width: 400px; height: 400px; border-radius: 50%;
+  background: #6366f1; filter: blur(120px); opacity: 0.2;
+}
+.cover::after {
+  content: ''; position: absolute; bottom: -150px; left: -150px;
+  width: 450px; height: 450px; border-radius: 50%;
+  background: #22d3ee; filter: blur(120px); opacity: 0.15;
+}
+.cover-badge {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: #22d3ee; text-transform: uppercase; letter-spacing: 0.2em;
+  margin-bottom: 24px; position: relative; z-index: 1;
+}
+.cover h1 {
+  font-size: 52px; font-weight: 900; letter-spacing: -0.03em;
+  text-align: center; margin-bottom: 16px; position: relative; z-index: 1;
+  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.cover .tagline {
+  font-size: 20px; color: #94a3b8; text-align: center;
+  max-width: 480px; line-height: 1.6; position: relative; z-index: 1;
+  margin-bottom: 40px;
+}
+.cover .pipeline {
+  display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  position: relative; z-index: 1; margin-bottom: 40px;
+}
+.cover .pipeline span {
+  font-size: 12px; padding: 6px 14px; border-radius: 100px;
+  background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.3);
+  color: #818cf8; font-family: 'JetBrains Mono', monospace;
+}
+.cover .url {
+  font-family: 'JetBrains Mono', monospace; font-size: 13px;
+  color: #64748b; position: relative; z-index: 1;
+  padding: 10px 20px; border-radius: 10px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+}
+
+.main-content { padding: 50px 55px 40px 55px; }
+
+.chapter { margin-top: 30px; }
+.chapter:first-child { margin-top: 0; }
+.chapter-header {
+  break-after: avoid;
+  border-bottom: 2px solid rgba(99,102,241,0.2);
+  padding-bottom: 12px; margin-bottom: 20px;
+}
+.chapter-header h2 {
+  font-size: 24px; font-weight: 800; color: #818cf8;
+  display: flex; align-items: center; gap: 10px;
+}
+.chapter-header .num {
+  font-family: 'JetBrains Mono', monospace; font-size: 14px;
+  color: #22d3ee; background: rgba(34,211,238,0.1);
+  padding: 4px 10px; border-radius: 6px;
+  border: 1px solid rgba(34,211,238,0.2);
+}
+
+.card {
+  break-inside: avoid; background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 12px;
+  padding: 20px; margin-bottom: 16px;
+}
+.card h3 { font-size: 16px; font-weight: 700; color: #e2e8f0; margin-bottom: 8px; }
+.card p { font-size: 13px; color: #94a3b8; line-height: 1.7; }
+.card .badge {
+  display: inline-block; font-size: 10px; padding: 3px 8px;
+  border-radius: 100px; font-family: 'JetBrains Mono', monospace;
+  margin-right: 6px; margin-bottom: 4px;
+}
+.badge-c { background: rgba(34,211,238,0.1); color: #22d3ee; border: 1px solid rgba(34,211,238,0.2); }
+.badge-unix { background: rgba(251,191,36,0.1); color: #fbbf24; border: 1px solid rgba(251,191,36,0.2); }
+.badge-git { background: rgba(249,115,22,0.1); color: #f97316; border: 1px solid rgba(249,115,22,0.2); }
+.badge-gen { background: rgba(167,139,250,0.1); color: #a78bfa; border: 1px solid rgba(167,139,250,0.2); }
+
+.code {
+  background: #0d1117; border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px; padding: 14px 16px; margin: 12px 0;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: #7ee787; line-height: 1.6; overflow-x: auto; white-space: pre;
+}
+.code .comment { color: #6e7681; }
+.code .keyword { color: #ff7b72; }
+.code .string { color: #a5d6ff; }
+
+.day-schedule {
+  break-inside: avoid; background: rgba(99,102,241,0.05);
+  border: 1px solid rgba(99,102,241,0.15); border-radius: 12px;
+  padding: 20px; margin-bottom: 16px;
+}
+.day-schedule h3 { font-size: 18px; font-weight: 700; color: #818cf8; margin-bottom: 12px; }
+.schedule-item {
+  display: flex; align-items: center; gap: 12px; padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 13px;
+}
+.schedule-item:last-child { border-bottom: none; }
+.schedule-item .time {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: #22d3ee; min-width: 55px;
+}
+.schedule-item .icon { font-size: 16px; }
+.schedule-item .label { color: #cbd5e1; }
+
+.error-card {
+  break-inside: avoid; background: rgba(220,38,38,0.05);
+  border: 1px solid rgba(220,38,38,0.15); border-radius: 12px;
+  padding: 18px; margin-bottom: 14px;
+}
+.error-card .err-msg {
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  color: #f87171; background: rgba(220,38,38,0.08);
+  padding: 8px 12px; border-radius: 6px; margin-bottom: 10px;
+}
+.error-card h3 { font-size: 15px; font-weight: 700; color: #fca5a5; margin-bottom: 6px; }
+.error-card p { font-size: 12px; color: #94a3b8; line-height: 1.6; margin-bottom: 6px; }
+.error-card ul { font-size: 12px; color: #94a3b8; padding-left: 18px; line-height: 1.6; }
+
+.callout {
+  break-inside: avoid; background: rgba(99,102,241,0.08);
+  border-left: 3px solid #6366f1; border-radius: 0 8px 8px 0;
+  padding: 14px 18px; margin: 16px 0;
+}
+.callout p { font-size: 13px; color: #c7d2fe; line-height: 1.7; }
+
+.ending {
+  width: 720px; height: 1020px; box-sizing: border-box;
+  break-before: page; overflow: hidden; position: relative;
+  background: linear-gradient(135deg, #0a0e1a, #111827);
+  display: flex; flex-direction: column; justify-content: center;
+  align-items: center; padding: 60px;
+}
+.ending::before {
+  content: ''; position: absolute; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px; height: 300px; border-radius: 50%;
+  background: #6366f1; filter: blur(100px); opacity: 0.15;
+}
+.ending h2 {
+  font-size: 36px; font-weight: 900; text-align: center;
+  margin-bottom: 16px; position: relative; z-index: 1;
+  background: linear-gradient(135deg, #6366f1, #22d3ee);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.ending p {
+  font-size: 16px; color: #94a3b8; text-align: center;
+  max-width: 440px; line-height: 1.7; position: relative; z-index: 1;
+  margin-bottom: 30px;
+}
+.ending .url-box {
+  position: relative; z-index: 1;
+  padding: 14px 28px; border-radius: 12px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+  font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #22d3ee;
+}
+</style>
+</head>
+<body>
+
+<!-- COVER -->
+<div class="cover">
+  <div class="cover-badge">EpiTous — Complete Learning & Work System</div>
+  <h1>From Zero to<br>Autonomous Developer</h1>
+  <p class="tagline">EpiTous accompagne un débutant complet dans sa journée de travail, lui apprend les fondamentaux, lui montre comment apprendre, chercher, pratiquer, debugger et résoudre des problèmes, puis l'amène progressivement vers l'autonomie.</p>
+  <div class="pipeline">
+    <span>Learn</span><span>Practice</span><span>Research</span><span>Debug</span><span>Reflect</span><span>Progress</span><span>Autonomy</span>
+  </div>
+  <div class="url">kajarnaklokossou2008.github.io/epitous/</div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- Chapter 1: Vision -->
+<div class="chapter">
+  <div class="chapter-header">
+    <h2><span class="num">01</span> Vision & Philosophie</h2>
+  </div>
+
+  <div class="callout">
+    <p><strong>EpiTous n'est pas un guide. C'est une structure complète de travail et d'apprentissage.</strong> L'objectif ultime n'est pas de faire réussir l'étudiant grâce à EpiTous. C'est de lui apprendre à réussir sans EpiTous.</p>
+  </div>
+
+  <p style="font-size: 14px; color: #94a3b8; line-height: 1.8; margin-bottom: 16px;">
+    EpiTous est une plateforme pédagogique interactive qui accompagne un débutant complet dans son apprentissage de la programmation et dans son travail quotidien. Elle combine cours progressifs, vidéos, documentation, recherche guidée, exercices, environnement de pratique, debugging, journal d'apprentissage, suivi de progression et assistance intelligente.
+  </p>
+
+  <p style="font-size: 14px; color: #94a3b8; line-height: 1.8; margin-bottom: 16px;">
+    Son premier parcours est conçu autour de la Piscine Epitech : l'étudiant commence sans prérequis, apprend les fondamentaux de l'informatique, Unix et C, découvre ensuite les contraintes spécifiques de son environnement pédagogique, puis applique progressivement ses connaissances aux tâches de la Piscine.
+  </p>
+
+  <div class="card">
+    <h3>🌱 La courbe d'autonomie</h3>
+    <p>L'assistance diminue progressivement jusqu'à l'autonomie complète :</p>
+    <div style="margin-top: 10px; display: flex; flex-direction: column; gap: 6px;">
+      <div style="font-size: 12px; color: #22c55e;">🟢 <strong>Débutant :</strong> "Voici quoi faire."</div>
+      <div style="font-size: 12px; color: #eab308;">🟡 <strong>Intermédiaire :</strong> "Voici les ressources. Choisis."</div>
+      <div style="font-size: 12px; color: #f97316;">🟠 <strong>Avancé :</strong> "Voici ton objectif. Organise ton travail."</div>
+      <div style="font-size: 12px; color: #6366f1;">🔵 <strong>Autonome :</strong> "Voici le problème. Résous-le."</div>
+    </div>
+  </div>
+</div>
+
+<!-- Chapter 2: Curriculum -->
+<div class="chapter">
+  <div class="chapter-header">
+    <h2><span class="num">02</span> Curriculum — Jours 1 à 7</h2>
+  </div>
+
+  <div class="day-schedule">
+    <h3>🐣 Jour 1 — L'ordinateur et toi</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Qu'est-ce qu'un ordinateur ? Qu'est-ce qu'un fichier ?</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : OS, terminal, clavier, commandes, chemins, programme</span></div>
+    <div class="schedule-item"><span class="time">09:45</span><span class="icon">📚</span><span class="label">Recherche : Lire "Qu'est-ce que la programmation"</span></div>
+    <div class="schedule-item"><span class="time">10:15</span><span class="icon">🎥</span><span class="label">Vidéo : How computers work</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : ls, cd, pwd, mkdir, touch dans le terminal</span></div>
+    <div class="schedule-item"><span class="time">11:30</span><span class="icon">🏫</span><span class="label">Epitech Mode : Organisation de l'environnement Piscine</span></div>
+    <div class="schedule-item"><span class="time">14:00</span><span class="icon">🎯</span><span class="label">Tâches : Configurer ton espace de travail</span></div>
+    <div class="schedule-item"><span class="time">17:45</span><span class="icon">🧠</span><span class="label">Revue : Qu'as-tu appris aujourd'hui ?</span></div>
+  </div>
+
+  <div class="day-schedule">
+    <h3>🖥️ Jour 2 — Le terminal : ton meilleur ami</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision du Jour 1</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : ls, cd, pwd, mkdir, rm, cp, mv, cat, echo, man</span></div>
+    <div class="schedule-item"><span class="time">09:45</span><span class="icon">📚</span><span class="label">Recherche : Lire le manuel de ls (man ls)</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Naviguer le système de fichiers, créer/supprimer</span></div>
+    <div class="schedule-item"><span class="time">11:30</span><span class="icon">🏫</span><span class="label">Epitech Mode : La norme dans l'usage du terminal</span></div>
+  </div>
+
+  <div class="day-schedule">
+    <h3>⚙️ Jour 3 — Premier programme C</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision des commandes terminal</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : Qu'est-ce que C, hello world, compilation, exécution</span></div>
+    <div class="schedule-item"><span class="time">10:15</span><span class="icon">🎥</span><span class="label">Vidéo : C programming for beginners</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Écrire et compiler hello world</span></div>
+    <div class="schedule-item"><span class="time">11:30</span><span class="icon">🏫</span><span class="label">Epitech Mode : Coding style, Makefile basique</span></div>
+  </div>
+  <div class="code"><span class="comment">// Hello World en C</span>
+<span class="keyword">#include</span> <span class="string">&lt;stdio.h&gt;</span>
+
+<span class="keyword">int</span> main(<span class="keyword">void</span>)
+{
+    printf(<span class="string">"Hello, World!\n"</span>);
+    <span class="keyword">return</span> 0;
+}</div>
+
+  <div class="day-schedule">
+    <h3>📦 Jour 4 — Variables et types</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision de la compilation</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : int, char, float, double, déclaration, printf</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Déclarer des variables, les afficher</span></div>
+  </div>
+  <div class="code"><span class="keyword">int</span> age = 25;
+<span class="keyword">char</span> initial = <span class="string">'K'</span>;
+<span class="keyword">float</span> taille = 1.75;
+
+printf(<span class="string">"Age: %d, Initial: %c, Taille: %.2f\n"</span>, age, initial, taille);</div>
+
+  <div class="day-schedule">
+    <h3>🔧 Jour 5 — Fonctions</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision des variables</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : Signature, paramètres, valeur de retour, void</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Écrire une fonction qui additionne deux nombres</span></div>
+  </div>
+  <div class="code"><span class="keyword">int</span> add(<span class="keyword">int</span> a, <span class="keyword">int</span> b)
+{
+    <span class="keyword">return</span> a + b;
+}
+
+<span class="comment">// Utilisation</span>
+<span class="keyword">int</span> result = add(3, 7);  <span class="comment">// result = 10</span></div>
+
+  <div class="day-schedule">
+    <h3>🔄 Jour 6 — Conditions et boucles</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision des fonctions</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : if/else, while, for, break, continue</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Boucle qui affiche les nombres 1 à 10</span></div>
+  </div>
+  <div class="code"><span class="keyword">for</span> (<span class="keyword">int</span> i = 1; i &lt;= 10; i++) {
+    printf(<span class="string">"%d\n"</span>, i);
+}
+
+<span class="keyword">if</span> (age &gt;= 18) {
+    printf(<span class="string">"Majeur\n"</span>);
+} <span class="keyword">else</span> {
+    printf(<span class="string">"Mineur\n"</span>);
+}</div>
+
+  <div class="day-schedule">
+    <h3>🎯 Jour 7 — Pointeurs (le jour critique)</h3>
+    <div class="schedule-item"><span class="time">09:00</span><span class="icon">☀️</span><span class="label">Warm-up : Révision de tout ce qui précède</span></div>
+    <div class="schedule-item"><span class="time">09:15</span><span class="icon">📖</span><span class="label">Cours : Qu'est-ce qu'un pointeur, & (adresse), * (déréférencement)</span></div>
+    <div class="schedule-item"><span class="time">10:15</span><span class="icon">🎥</span><span class="label">Vidéo : Pointers explained</span></div>
+    <div class="schedule-item"><span class="time">10:45</span><span class="icon">💻</span><span class="label">Pratique : Déclarer un pointeur, obtenir une adresse, déréférencer</span></div>
+  </div>
+  <div class="code"><span class="keyword">int</span> x = 42;
+<span class="keyword">int</span> *ptr = &amp;x;  <span class="comment">// ptr pointe vers l'adresse de x</span>
+
+printf(<span class="string">"Valeur de x: %d\n"</span>, x);       <span class="comment">// 42</span>
+printf(<span class="string">"Adresse de x: %p\n"</span>, (<span class="keyword">void</span>*)&amp;x);
+printf(<span class="string">"Valeur via ptr: %d\n"</span>, *ptr);  <span class="comment">// 42</span>
+
+*ptr = 100;  <span class="comment">// Modifie x via le pointeur</span>
+printf(<span class="string">"Nouvelle valeur de x: %d\n"</span>, x); <span class="comment">// 100</span></div>
+</div>
+
+<!-- Chapter 3: Glossary -->
+<div class="chapter">
+  <div class="chapter-header">
+    <h2><span class="num">03</span> Glossaire essentiel</h2>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-c">C</span><span class="badge badge-unix">Unix</span><span class="badge badge-git">Git</span><span class="badge badge-gen">Général</span>
+    <h3>Variable</h3>
+    <p>Une variable est un espace de mémoire qui stocke une valeur. En C, on doit déclarer le type : <code style="color:#7ee787;font-family:monospace;font-size:11px">int age = 25;</code></p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-c">C</span>
+    <h3>Pointeur</h3>
+    <p>Un pointeur est une variable qui stocke l'adresse mémoire d'une autre variable. <code style="color:#7ee787;font-family:monospace;font-size:11px">int *ptr = &x;</code> — ptr contient l'adresse de x. On déréférence avec <code style="color:#7ee787;font-family:monospace;font-size:11px">*ptr</code> pour accéder à la valeur.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-c">C</span>
+    <h3>Fonction</h3>
+    <p>Bloc de code réutilisable qui prend des paramètres en entrée et retourne une valeur. <code style="color:#7ee787;font-family:monospace;font-size:11px">int add(int a, int b) { return a + b; }</code></p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-unix">Unix</span>
+    <h3>Terminal</h3>
+    <p>Interface texte qui permet d'interagir avec le système d'exploitation via des commandes. Exemples : <code style="color:#7ee787;font-family:monospace;font-size:11px">ls</code>, <code style="color:#7ee787;font-family:monospace;font-size:11px">cd</code>, <code style="color:#7ee787;font-family:monospace;font-size:11px">mkdir</code>.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-unix">Unix</span>
+    <h3>Compilation</h3>
+    <p>Processus qui transforme le code source (C) en un exécutable. <code style="color:#7ee787;font-family:monospace;font-size:11px">gcc main.c -o program</code> produit un fichier <code style="color:#7ee787;font-family:monospace;font-size:11px">program</code> qu'on peut exécuter.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-c">C</span>
+    <h3>Makefile</h3>
+    <p>Fichier qui automatise la compilation. Contient des règles qui décrivent comment compiler le projet. <code style="color:#7ee787;font-family:monospace;font-size:11px">make</code> exécute la première règle.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-git">Git</span>
+    <h3>Commit</h3>
+    <p>Un instantané (snapshot) de ton code à un moment donné. <code style="color:#7ee787;font-family:monospace;font-size:11px">git commit -m "message"</code> sauvegarde les modifications avec un message descriptif.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-git">Git</span>
+    <h3>Branch (Branche)</h3>
+    <p>Une ligne de développement parallèle. <code style="color:#7ee787;font-family:monospace;font-size:11px">git branch feature</code> crée une branche nommée "feature" pour travailler sans impacter la branche principale.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-gen">Général</span>
+    <h3>Fichier vs Dossier</h3>
+    <p>Un fichier stocke des données (code, image, texte). Un dossier (directory) contient des fichiers et d'autres dossiers, organisant la structure.</p>
+  </div>
+
+  <div class="card">
+    <span class="badge badge-unix">Unix</span>
+    <h3>Chemin (Path)</h3>
+    <p>Localisation d'un fichier ou dossier dans l'arborescence. Absolu : <code style="color:#7ee787;font-family:monospace;font-size:11px">/home/user/projet</code>. Relatif : <code style="color:#7ee787;font-family:monospace;font-size:11px">../projet</code>.</p>
+  </div>
+</div>
+
+<!-- Chapter 4: Error Lab -->
+<div class="chapter">
+  <div class="chapter-header">
+    <h2><span class="num">04</span> Error Lab — Erreurs courantes</h2>
+  </div>
+
+  <div class="error-card">
+    <div class="err-msg">segmentation fault (core dumped)</div>
+    <h3>Erreur de segmentation</h3>
+    <p><strong>Cause :</strong> Ton programme accède à une zone de mémoire interdite — souvent un pointeur non initialisé, un accès hors limites d'un tableau, ou un déréférencement de pointeur NULL.</p>
+    <p><strong>Debug :</strong></p>
+    <ul>
+      <li>Vérifie tous tes pointeurs — sont-ils initialisés ?</li>
+      <li>Vérifie les bornes de tes tableaux (index 0 à n-1, pas n)</li>
+      <li>Utilise <code style="color:#7ee787;font-family:monospace;font-size:11px">valgrind ./program</code> pour trouver la ligne exacte</li>
+      <li>Vérifie que tu ne déréférences pas un pointeur NULL</li>
+    </ul>
+  </div>
+
+  <div class="error-card">
+    <div class="err-msg">undefined reference to `main'</div>
+    <h3>Référence non définie à main</h3>
+    <p><strong>Cause :</strong> Le compilateur ne trouve pas la fonction <code style="color:#7ee787;font-family:monospace;font-size:11px">main</code>. Soit elle n'existe pas, soit elle est mal orthographiée, soit tu compiles le mauvais fichier.</p>
+    <p><strong>Debug :</strong> Vérifie que tu as <code style="color:#7ee787;font-family:monospace;font-size:11px">int main(void)</code> ou <code style="color:#7ee787;font-family:monospace;font-size:11px">int main(int argc, char **argv)</code> dans ton fichier C.</p>
+  </div>
+
+  <div class="error-card">
+    <div class="err-msg">implicit declaration of function 'printf'</div>
+    <h3>Déclaration implicite de fonction</h3>
+    <p><strong>Cause :</strong> Tu utilises une fonction sans avoir inclus le header qui la déclare. Pour <code style="color:#7ee787;font-family:monospace;font-size:11px">printf</code>, il faut <code style="color:#7ee787;font-family:monospace;font-size:11px">#include &lt;stdio.h&gt;</code>.</p>
+    <p><strong>Debug :</strong> Ajoute le <code style="color:#7ee787;font-family:monospace;font-size:11px">#include</code> approprié en haut de ton fichier.</p>
+  </div>
+
+  <div class="error-card">
+    <div class="err-msg">make: *** No rule to make target</div>
+    <h3>Pas de règle dans le Makefile</h3>
+    <p><strong>Cause :</strong> Le Makefile ne contient pas de règle pour la cible demandée, ou il y a une faute de frappe dans le nom de la cible.</p>
+    <p><strong>Debug :</strong> Vérifie ton Makefile — les tabulations (pas d'espaces !) et les noms de cibles.</p>
+  </div>
+</div>
+
+<!-- Chapter 5: Roadmap -->
+<div class="chapter">
+  <div class="chapter-header">
+    <h2><span class="num">05</span> Roadmap</h2>
+  </div>
+
+  <div class="card">
+    <h3>V1 — Frontend statique (actuel)</h3>
+    <p>Landing page, Dashboard, 7 jours de curriculum, Journal, Glossaire, Error Lab, Paths. Persistance localStorage. Disponible sur GitHub Pages.</p>
+  </div>
+  <div class="card">
+    <h3>V2 — Backend + comptes utilisateurs</h3>
+    <p>Sauvegarde de progression côté serveur, authentification, synchronisation multi-appareils.</p>
+  </div>
+  <div class="card">
+    <h3>V3 — Code runner sécurisé</h3>
+    <p>Exécution de code C dans un environnement sandbox (Docker). L'étudiant peut tester son code directement dans EpiTous.</p>
+  </div>
+  <div class="card">
+    <h3>V4 — EpiTutor (IA)</h3>
+    <p>Assistant IA qui analyse le code de l'étudiant, donne du feedback personnalisé et suggère des exercices adaptés.</p>
+  </div>
+  <div class="card">
+    <h3>V5 — Forum / Communauté</h3>
+    <p>Les étudiants peuvent s'entraider, partager leurs solutions (après validation), et poser des questions.</p>
+  </div>
+  <div class="card">
+    <h3>V6 — Personnalisation + Analytics</h3>
+    <p>Parcours personnalisés selon le rythme et les difficultés de chacun. Analytics pour suivre la progression globale.</p>
+  </div>
+</div>
+
+</div>
+
+<!-- ENDING -->
+<div class="ending">
+  <h2>L'objectif ultime</h2>
+  <p>EpiTous n'est pas un guide. C'est une structure complète de travail et d'apprentissage. L'objectif n'est pas de faire réussir l'étudiant grâce à EpiTous. C'est de lui apprendre à réussir sans EpiTous.</p>
+  <div class="url-box">kajarnaklokossou2008.github.io/epitous/</div>
+</div>
+
+</body>
+</html>
